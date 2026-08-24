@@ -25,21 +25,22 @@ on:
 
 jobs:
     preflight:
-    if: ${{ inputs.macos_version != '' }}
-    runs-on: ubuntu-slim
-    timeout-minutes: 5
-    outputs:
-      _build: ${{ steps.check.outputs._build }}
+      if: ${{ inputs.macos_version != '' }}
+      runs-on: ubuntu-slim
+      timeout-minutes: 5
+      outputs:
+        _build: ${{ steps.check.outputs._build }}
 
-    steps:
-      - name: Preflight
-        id: check
-        run: |
-          echo "_build=true" >> $GITHUB_OUTPUT
+      steps:
+        - name: Preflight
+          id: check
+          run: |
+            echo "_build=true" >> $GITHUB_OUTPUT
 
-          echo "## Preflight check passed" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Starting macOS Recovery ISO build." >> "$GITHUB_STEP_SUMMARY"
+            echo "## Preflight check passed" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Starting macOS Recovery ISO build." >> "$GITHUB_STEP_SUMMARY"
+            
   build-recovery-iso:
     needs: preflight
     if: needs.preflight.outputs._build == 'true'
